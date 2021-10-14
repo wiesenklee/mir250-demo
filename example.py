@@ -1,11 +1,11 @@
-from hashlib import sha256
+import hashlib
 import requests
 import base64
 
 base_url = 'http://192.168.1.111/api/v2.0.0'
 auth_user = 'Distributor'
 auth_pass = 'distributor'
-auth_key = auth_user + ':' + sha256(auth_pass.encode()).hexdigest()
+auth_key = auth_user + ':' + hashlib.sha256(auth_pass.encode()).hexdigest()
 auth_key_encoded = base64.b64encode(auth_key.encode()).decode('utf-8')
 auth_headers = {'accept': 'application/json', 'Authorization': 'Basic ' + auth_key_encoded, 'Accept-Language': 'de_DE'}
 
@@ -21,6 +21,8 @@ auth_headers = {'accept': 'application/json', 'Authorization': 'Basic ' + auth_k
 # endpoint = '/mission_queue'
 # response = requests.post(base_url + endpoint, json={'mission_id': mission_id}, headers=auth_headers)
 # print(response.json())
+
+# Start missions from queue
 
 # endpoint = '/status'
 # response = requests.put(base_url + endpoint, json={'state_id': 3}, headers=auth_headers)
