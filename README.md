@@ -18,10 +18,31 @@ MiR is **connected** to.
 Out of the box the MiR will host its own wifi-network. It will be present, even if the MiR is connected to multiple
 other networks at the same time. Therefore, it can be used as a backup network, in case other networks fail.
 
+The web-interface can then be accessed via http://mir.com
+
 ### Additional networks 
+In order to add an additional network, connect to the MiR-hosted network and open the web-interface. Open the system tab and jump into Settings -> Wifi. Use 'Add connection' to add an additional network.
+
+The web-interface will than be accessed via the IP-address the MiR will be given
+
+### Authorization
+The web-interface will ask for authorization when it will be opened the first time. Once logged in, the credentials are saved via cookies.
+
+Stock username and password are:
+
+**Username**: Distributor -  **Password**: distributor
 
 ## Using the REST API
 
+> The REST API is working parallel to the web-interface. In every situation the web-interface is used, the REST API will also work.
+
 Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_rest_api_21302.pdf
+
+### Get Started with Python
+
+
+
+
+
 
 
