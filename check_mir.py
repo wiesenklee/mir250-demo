@@ -7,7 +7,7 @@ import rospy
 
 class ROSAPI:
     def __init__(self, uri):
-        self.url = uri if len(uri) > 0 else 'http://192.168.12.20/api/v2.0.0'
+        self.url = uri if len(uri) > 0 else 'http://mir.com/api/v2.0.0'
         self.payload  = {}
         self.headers = {
             'Authorization': 'Basic RGlzdHJpYnV0b3I6NjJmMmYwZjFlZmYxMGQzMTUyYzk1ZjZmMDU5NjU3NmU0ODJiYjhlNDQ4MDY0MzNmNGNmOTI5NzkyODM0YjAxNA==',
@@ -54,7 +54,7 @@ class ROSAPI:
         return json.loads(r.text)
 
 # create insdtance       
-mir = ROSAPI('http://192.168.12.20/api/v2.0.0')
+mir = ROSAPI('http://192.168.1.111/api/v2.0.0')
 #mir.getinfo('')
 #mir.listinfo('/position_types')
 
@@ -67,7 +67,7 @@ infoY = mir.check('/positions/3b70ea6b-3c95-11ec-be1f-0001297861a6')
 print("**get actual goal in y direction\n\t",infoY['pos_y'])
 
 
-newgoal= 23
+newgoal= 24
 print("**change goal with desired y position\n\t", newgoal)
 mir.put('/positions/3b70ea6b-3c95-11ec-be1f-0001297861a6','{\"pos_y\":'+str(newgoal)+'}')
 
@@ -79,10 +79,9 @@ while(1):
     deltaY = abs(robotstate - newgoal)
     print("**delta position of mir to goal \n\t",deltaY)
 
-    if(deltaY <= 0.2):
-        mir.put('/positions/3b70ea6b-3c95-11ec-be1f-0001297861a6','{\"pos_y\":'+str(newgoal+0.5)+'}')
-    else:
-        break
+    if(deltaY <= 0.3):
+        newgoal+=0.6
+        mir.put('/positions/3b70ea6b-3c95-11ec-be1f-0001297861a6','{\"pos_y\":'+str(newgoal)+'}')
 
 
 # etc...

@@ -3,8 +3,9 @@ import hashlib
 import requests
 import base64
 import time
+import json
 
-base_url = 'http://mir.com/api/v2.0.0'
+base_url = 'http://192.168.1.111/api/v2.0.0'
 auth_user = 'Distributor'
 auth_pass = 'distributor'
 auth_key = auth_user + ':' + hashlib.sha256(auth_pass.encode()).hexdigest()
@@ -29,6 +30,17 @@ auth_headers = {'accept': 'application/json', 'Authorization': 'Basic ' + auth_k
 # endpoint = '/status'
 # response = requests.put(base_url + endpoint, json={'state_id': 3}, headers=auth_headers)
 # print(response.json())
+
+# ++ STATUS ++
+def get_status():
+    endpoint = '/status'
+    response = requests.get(base_url + endpoint, headers=auth_headers)
+    return response.json()
+
+def set_status(body):
+    endpoint = '/status'
+    response = requests.put(base_url + endpoint,json=body ,headers=auth_headers)
+    return response.json()
 
 # ++ MISSIONS ++
 def get_mission_group_guid(name=''):
@@ -93,4 +105,20 @@ def custom_mission_group():
 # time.sleep(0.5)
 # print(set_position(pos_guid, prev_pos["pos_y"]))
 
-print(print_positions())
+# print(print_positions())
+
+print(set_status({"clear_error": True}))
+print(get_status()["mode_key_state"])
+print(get_status()["state_id"])
+token = set_status({"state_id":11, "web_session_id": "67l8b1nns52ue9kp5qtt8fivl1"})
+print(token)
+print(get_status()["state_id"])
+
+print("--> press resume button on robot")
+input()
+
+print(json.dumps(get_status(), indent=2))
+
+print(set_status({"velocity":{"linear": 0.2},"web_session_id": "67l8b1nns52ue9kp5qtt8fivl1", "user_token": token}))
+time.sleep(1)
+print(set_status({"velocity":{"linear": 0},"web_session_id": "67l8b1nns52ue9kp5qtt8fivl1", "user_token": token}))
