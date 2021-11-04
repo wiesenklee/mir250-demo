@@ -1,8 +1,9 @@
 import hashlib
 import requests
 import base64
+import time
 
-base_url = 'http://192.168.1.111/api/v2.0.0'
+base_url = 'http://mir.com/api/v2.0.0'
 auth_user = 'Distributor'
 auth_pass = 'distributor'
 auth_key = auth_user + ':' + hashlib.sha256(auth_pass.encode()).hexdigest()
@@ -28,6 +29,7 @@ auth_headers = {'accept': 'application/json', 'Authorization': 'Basic ' + auth_k
 # response = requests.put(base_url + endpoint, json={'state_id': 3}, headers=auth_headers)
 # print(response.json())
 
+# ++ MISSIONS ++
 def get_mission_group_guid(name=''):
     # Get all mission groups
     endpoint = '/mission_groups'
@@ -52,19 +54,42 @@ def create_mission_group(name, icon, priority=1, feature='default'):
 
 def create_mission(name):
     endpoint = '/missions'
-    body = {
-        "name": name,
-        "feature": feature,
-        "icon": icon,
-        "priority": priority
-    }
+    body = {}
     response = requests.post(base_url + endpoint, json=body, headers=auth_headers)
     return response.json()["guids"]
 
-mission_group_name = "Python Group"
-mission_group_guid = get_mission_group_guid(mission_group_name)
-if not mission_group_guid:
-    with open('base64svg.txt') as f: 
-        mission_group_guid = create_mission_group(mission_group_name, icon=f.read())
+# ++ POSITIONS ++
+def print_positions():
+    endpoint = '/positions'
+    response = requests.get(base_url + endpoint, headers=auth_headers)
+    return response.json()
 
-print(mission_group_guid)
+def get_position(guid):
+    endpoint = '/positions/'+ guid
+    response = requests.get(base_url + endpoint, headers=auth_headers)
+    return response.json()
+
+def set_position(guid,y):
+    endpoint = '/positions/'+ guid
+    body = {
+        "pos_y": y,
+    }
+    response = requests.put(base_url + endpoint, json=body, headers=auth_headers)
+    return response.json()
+
+def custom_mission_group():
+    mission_group_name = "Python Group"
+    mission_group_guid = get_mission_group_guid(mission_group_name)
+    if not mission_group_guid:
+        with open('base64svg.txt') as f: 
+            mission_group_guid = create_mission_group(mission_group_name, icon=f.read())
+    print(mission_group_guid)
+
+
+# pos_guid = "360933ab-37d4-11ec-9fd2-0001297861a6"
+# prev_pos = get_position(pos_guid)
+# print(set_position(pos_guid, prev_pos["pos_y"] + 1))
+# time.sleep(0.5)
+# print(set_position(pos_guid, prev_pos["pos_y"]))
+
+print(print_positions())
