@@ -58,7 +58,6 @@ mir = ROSAPI('http://192.168.1.111/api/v2.0.0')
 #mir.getinfo('')
 #mir.listinfo('/position_types')
 
-
 goal = mir.check('/positions') # retrieve position GUID
 print("**ID to modify during operation\n\t",goal[8]['guid'])
 

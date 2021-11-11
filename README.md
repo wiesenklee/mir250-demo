@@ -36,13 +36,12 @@ Stock username and password are:
 
 > The REST API is working parallel to the web-interface. In every situation the web-interface is used, the REST API will also work.
 
+> 🚨  MANUAL DRIVING MODE NOT WOKRING 
+
 Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_rest_api_21302.pdf
 
 ### Get Started with Python
 
+Look at some code-examples in [./RESTAPI](./RESTAPI). In [./RESTAPI/test.py](./RESTAPI/test.py) there is a unfinished library to easy-controll the API. Code-snippets are also there
 
-
-
-
-
-
+## Using the ROSBRIDGE
