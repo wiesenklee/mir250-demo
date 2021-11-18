@@ -6,7 +6,7 @@ Links:
 - Detailed Guide: https://www.mobile-industrial-robots.com/media/12739/mir250_user_guide_1-4_en.pdf
 - Web-interface Guide: https://www.mobile-industrial-robots.com/media/13758/mir-robot-reference-guide-23_en.pdf
 
-> In this document the MiR250 roboter is referred as MiR
+> **In this document the MiR250 roboter is referred as MiR**
 
 ## Using the web-interface
 
@@ -25,6 +25,8 @@ In order to add an additional network, connect to the MiR-hosted network and ope
 
 The web-interface will than be accessed via the IP-address the MiR will be given
 
+> 🚨 If connected to the MiR through an additional network, the connection is sometimes aborted randomly
+
 ### Authorization
 The web-interface will ask for authorization when it will be opened the first time. Once logged in, the credentials are saved via cookies.
 
@@ -40,8 +42,16 @@ Stock username and password are:
 
 Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_rest_api_21302.pdf
 
-### Get Started with Python
+### Getting Started with Python
 
-Look at some code-examples in [./RESTAPI](./RESTAPI). In [./RESTAPI/test.py](./RESTAPI/test.py) there is a unfinished library to easy-controll the API. Code-snippets are also there
+Look at some code-examples in [./rest_api](./rest_api). There is a unfinished library in [./rest_api/test.py](./rest_api/test.py)  to easy-controll the API. Code-snippets are also there.
 
-## Using the ROSBRIDGE
+## Using the rosbridge
+
+Rosbridge-Documentation: http://wiki.ros.org/rosbridge_suite
+Python-Client: https://github.com/gramaziokohler/roslibpy
+
+The *rosbridge* is a service hosted on the MiR that enables interaction with the ROS-system via network (a websocket). Thr MiR hosts a **server** and any network-device can connect as a **client**. There are java, javascript and python libraries that help with the client-server communication. For communication the JSON-standart is used.
+
+### Getting Started with rosbridge
+For now, just look at some code-examples in [./rosbridge](./RESTAPI).
