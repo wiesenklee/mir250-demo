@@ -1,9 +1,45 @@
 import roslibpy
+import json
+
+class MirInspect:
+    def __init__(self, host="mir.com", port=9090):
+        self.host = host
+        self.port = port
+    
+    def __createTopic(self, c, t_name):
+        try:
+            t_type = c.get_topic_type(t_name, callback=None)
+        except:
+            print("Error getting informations of topic: " + t_name)
+            return None
+        return roslibpy.Topic(c,t_name,t_type)
+
+    def connect(self):
+        try: self.client = roslibpy.Ros(host=self.host, port=self.port)
+        except Exception: 
+            print("Could not connect to ROS")
+            return False
+
+        self.client.run()
+        return True
+
+    def terminate(self):
+        self.client.terminate()
+        
+    def topic_list(self):
+        t = self.client.get_topics(callback=None)
+        print(json.dumps(t, indent=3))
+
+    def topic_echo(self, t):
+        t = self.__createTopic(self.client, '/camera_floor_left/driver/color/image_raw')
+        t.subscribe(lambda m: print(m))
+        input("press enter to stop echo")
+        t.unsubscribe()
 
 class MirManual:
-    def __init__(self, host, port, session_id):
-        self.host = host if len(host) > 0 else "misr.com"
-        self.port = port if port else 9090
+    def __init__(self, host="mir.com", port=9090, session_id=None):
+        self.host = host
+        self.port = port
         self.id = session_id
 
     def __setupEndpoints(self):
@@ -13,18 +49,25 @@ class MirManual:
             self.client, '/robot_status', 'mirMsgs/RobotStatus')
         self.t_safetyInfo = roslibpy.Topic(
             self.client, '/safety_status', 'mirMsgs/SafetyStatus')
-        self.s_state = roslibpy.Service(
+        self.s_setState = roslibpy.Service(
             self.client, '/mirsupervisor/setRobotState', 'mirSupervisor/SetState')
         self.s_errorReset = roslibpy.Service(
             self.client, '/mirsupervisor/requestErrorReset', 'std_srv/Empty')
+        self.s_speedMode = roslibpy.Service(
+            self.client, '/mirsupervisor/joystick_mode', 'mir_srvs/JoysticksMode')
 
     def connect(self):
-        self.client = roslibpy.Ros(host=self.host, port=self.port)
+        try: self.client = roslibpy.Ros(host=self.host, port=self.port)
+        except Exception: 
+            print("Could not connect to ROS")
+            return False
+
+        self.__setupEndpoints()
         self.client.run()
-        
-        if self.client.is_connected:
-            self.__setupEndpoints()
-        return self.client.is_connected
+        return True
+
+    def terminate(self):
+        self.client.terminate()
 
     def subToInfo(self):
         l = self.t_info
@@ -41,7 +84,7 @@ class MirManual:
         l.subscribe(set_info)
 
     def callManualMode(self):
-        s = self.s_state
+        s = self.s_setState
         req = roslibpy.ServiceRequest({
             'robotState': 11,
             'web_session_id': self.id
@@ -50,11 +93,19 @@ class MirManual:
         self.token = rep['joystick_token']
 
     def callPauseMode(self):
-        s = self.s_state
+        s = self.s_setState
         req = roslibpy.ServiceRequest({'robotState': 4})
         s.call(req)
 
+    def callSpeedLimit(self, b):
+        s = self.s_speedMode
+        req = roslibpy.ServiceRequest({
+            'command': 2 if b else 3
+        })
+        s.call(req)
+
     def move(self, x, z):
+        if not hasattr(self,'token'): return
         t = self.t_vel
         m = roslibpy.Message({
             'joystick_token': self.token,
@@ -72,6 +123,3 @@ class MirManual:
             }
         })
         t.publish(m)
-
-    def terminate(self):
-        self.client.terminate()
