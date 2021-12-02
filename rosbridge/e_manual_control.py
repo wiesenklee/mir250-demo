@@ -18,7 +18,9 @@ def start_controlling(mir, screen):
     # waiting for button press
     while mir.safetyInfo['is_manual_mode_restart_required']:
         pass
-    log("Now use the arrowkeys to move robot. Press 'q' to quit.", 0, screen)
+    log("Now use the arrowkeys to move robot", 0, screen)
+    log("Press '+' or '-' to set speed limit.", 1, screen)
+    log("Press 'q' to quit.", 2, screen)
 
     x = 0
     z = 0
@@ -29,6 +31,12 @@ def start_controlling(mir, screen):
         if arrow_key == ord('q'):
             break
 
+        if arrow_key == ord('+'):
+            mir.callSpeedLimit(False)
+
+        if arrow_key == ord('-'):
+            mir.callSpeedLimit(True)
+ 
         if arrow_key == curses.KEY_UP:
             x = 0.3
         elif arrow_key == curses.KEY_DOWN:
@@ -41,11 +49,10 @@ def start_controlling(mir, screen):
             z = 0.3
         else: z = 0
 
-        log(f"X: {str(x)} Y:{str(z)}", 1, screen)
         mir.move(x, z)
 
 def end_controlling(mir, screen):
-    # Close websocket connectin to mir
+    # Close websocket connection to mir
     mir.callPauseMode()
     mir.terminate()
 
@@ -68,8 +75,7 @@ def main():
     host = usr_host if len(usr_host) > 0 else sdt_host
     mir = MirManual(host, 9090, session_id)
 
-    try:
-        mir.connect()
+    try: mir.connect()
     except:
         print("Cloud not connect to mir! Leaving...")
         return
@@ -83,8 +89,7 @@ def main():
     curses.noecho()
     curses.cbreak()
 
-    try:
-        start_controlling(mir, screen)
+    try: start_controlling(mir, screen)
     finally:
         # Making sure the connection to MIR is always closed savely
         end_controlling(mir, screen)
