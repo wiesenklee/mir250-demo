@@ -25,7 +25,7 @@ In order to add an additional network, connect to the MiR-hosted network and ope
 
 The web-interface will than be accessed via the IP-address the MiR will be given
 
-> 🚨 If connected to the MiR through an additional network, the connection is sometimes aborted randomly
+> ⚠️ If connected to the MiR through an additional network, the connection is sometimes aborted randomly
 
 ### Authorization
 The web-interface will ask for authorization when it will be opened the first time. Once logged in, the credentials are saved via cookies.
@@ -36,9 +36,9 @@ Stock username and password are:
 
 ## Using MiR with REST API
 
-> **The the web-interface is based on the REST API.** In every situation the web-interface is used, the REST API will also work. 
+> ⚠️ Manual Driving Mode not working with REST API
 
-> 🚨  Manual Driving Mode not working with REST API
+> **The the web-interface is based on the REST API.** In every situation the web-interface is used, the REST API will also work. 
 
 Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_rest_api_21302.pdf
 
