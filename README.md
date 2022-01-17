@@ -34,24 +34,60 @@ Stock username and password are:
 
 **Username**: Distributor -  **Password**: distributor
 
-## Using the REST API
+## Using MiR with REST API
 
-> The REST API is working parallel to the web-interface. In every situation the web-interface is used, the REST API will also work.
+> **The the web-interface is based on the REST API.** In every situation the web-interface is used, the REST API will also work. 
 
-> 🚨  MANUAL DRIVING MODE NOT WOKRING 
+> 🚨  Manual Driving Mode not working with REST API
 
 Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_rest_api_21302.pdf
 
-### Getting Started with Python
+### Getting Started
 
 Look at some code-examples in [./rest_api](./rest_api). There is a unfinished library in [./rest_api/test.py](./rest_api/test.py)  to easy-controll the API. Code-snippets are also there.
 
-## Using the rosbridge
-
-Rosbridge-Documentation: http://wiki.ros.org/rosbridge_suite
-Python-Client: https://github.com/gramaziokohler/roslibpy
+## Using MiR with rosbridge
 
 The *rosbridge* is a service hosted on the MiR that enables interaction with the ROS-system via network (a websocket). Thr MiR hosts a **server** and any network-device can connect as a **client**. There are java, javascript and python libraries that help with the client-server communication. For communication the JSON-standart is used.
 
-### Getting Started with rosbridge
-For now, just look at some code-examples in [./rosbridge](./RESTAPI).
+Documentation: http://wiki.ros.org/rosbridge_suite
+
+Python-Client: https://github.com/gramaziokohler/roslibpy
+
+### Getting Started 
+
+0. Having *python3* and *pip3* installed.
+1. Install *python-client* for rosbridge
+
+    `$ pip install roslibpy`
+2. Connect to MiR's network
+3. Run [./rosbridge/e_inspecting.py](./rosbridge/e_inspecting.py)
+
+    `$ python3 ./rosbridge/e_inspecting.py`
+
+    If a huge list of endpoints is returned, client-server communication is working.
+4. Run [./rosbridge/e_manual_control.py](./rosbridge/e_manual_control.py)
+
+    `$ python3 ./rosbridge/e_manual_control.py`
+
+    Follow instructions and you should be able to manually control the MiR
+
+For further informations, look at the package [./rosbridge/mir.py](./rosbridge/mir.py)
+
+### Integrate MiR in other ROS system
+
+The MiR can also act as a node in another ROS system. 
+
+0. Having done [Getting Started](#getting-started-1) for rosbridge
+1. Install *python-node* for ROS  
+
+    `$ pip install rospy`
+2. Make sure you are connected to MiR's network
+3. Make sure your ROS core is running
+4. Run [./rosbridge/e_ros.py](./rosbridge/e_ros.py)
+
+    `$ python3 ./rosbridge/e_ros.py`
+
+    Now, the topics `/mir/robotState` and `/mir/cmd_vel` are available.
+
+For further informations, look at the package [./rosbridge/mir_ros.py](./rosbridge/mir_ros.py)
