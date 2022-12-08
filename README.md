@@ -91,3 +91,23 @@ The MiR can also act as a node in another ROS system.
     Now, the topics `/mir/robotState` and `/mir/cmd_vel` are available.
 
 For further informations, look at the package [./rosbridge/mir_ros.py](./rosbridge/mir_ros.py)
+
+### Using Dockerfile
+Docker can be used to obtain ROS-functionality on machines that is not nativly running ROS (e.g. Ubuntu 22.04 for noetic). To use this program with docker you first need to build an image using the [./Dockerfile](./Dockerfile) *(of course, docker needs to be installed)*
+
+```
+docker buid -t mir .
+```
+
+Then start a docker container. The option `-it` is used for having an interactive terminal. `--net="host"` will use the host network, so the MiR can be found via IP.
+
+```
+docker run -it --net="host" mir 
+```
+
+If you need a second terminal while container is running, use this:
+
+```
+docker exec -it <CONTAINER_ID> bash
+$ source /opt/ros/<ROS_DISTRO>/setup.bash
+```
