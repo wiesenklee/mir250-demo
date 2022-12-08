@@ -25,7 +25,7 @@ In order to add an additional network, connect to the MiR-hosted network and ope
 
 The web-interface will than be accessed via the IP-address the MiR will be given
 
-> ⚠️ If connected to the MiR through an additional network, the connection is sometimes aborted randomly
+> ⚠️ A connection to the MiR through an additional network is **very unstable**. Hint: Connect to MiR's own network and use your phone via USB tethering to have internet available on your device.
 
 ### Authorization
 The web-interface will ask for authorization when it will be opened the first time. Once logged in, the credentials are saved via cookies.
