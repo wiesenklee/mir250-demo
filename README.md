@@ -1,14 +1,17 @@
 # Quickstart MiR250
 
-Links:
-
-- Quickstart: https://www.mobile-industrial-robots.com/media/12722/mir250_quick_start_1-4_en.pdf
-- Detailed Guide: https://www.mobile-industrial-robots.com/media/12739/mir250_user_guide_1-4_en.pdf
-- Web-interface Guide: https://www.mobile-industrial-robots.com/media/13758/mir-robot-reference-guide-23_en.pdf
-
 > **In this document the MiR250 roboter is referred as MiR**
 
-## Using the web-interface
+There are currently four known ways to access and controll the MiR:
+- [Using the web-interface](#web-interface)
+- [Using the REST API](#rest-api)
+- [Using a websocket (rosbridge)](#websocket-rosbridge)
+- [Using LAN connection](#lan-connection)
+
+Additionally this repository has Docker compatibility. See [Working on non-ROS-OS](#working-on-non-ros-os-docker)
+
+
+## Web-interface
 
 The MiR can be maintained and controlled by a web-interface. Access ist gained by connecting to the network the MiR is
 connected to. These networks can be of two different types: The network **hosted** by the MiR itself or a network the
@@ -34,7 +37,7 @@ Stock username and password are:
 
 **Username**: Distributor -  **Password**: distributor
 
-## Using MiR with REST API
+## REST API
 
 > ⚠️ Manual Driving Mode not working with REST API
 
@@ -46,7 +49,7 @@ Documentation: https://www.mobile-industrial-robots.com/media/13736/mir_mir250_r
 
 Look at some code-examples in [./rest_api](./rest_api). There is a unfinished library in [./rest_api/test.py](./rest_api/test.py)  to easy-controll the API. Code-snippets are also there.
 
-## Using MiR with rosbridge
+## Websocket (rosbridge)
 
 The *rosbridge* is a service hosted on the MiR that enables interaction with the ROS-system via network (a websocket). Thr MiR hosts a **server** and any network-device can connect as a **client**. There are java, javascript and python libraries that help with the client-server communication. For communication the JSON-standart is used.
 
@@ -92,7 +95,18 @@ The MiR can also act as a node in another ROS system.
 
 For further informations, look at the package [./rosbridge/mir_ros.py](./rosbridge/mir_ros.py)
 
-### Using Dockerfile
+## LAN connection
+
+When having a wired LAN connection to the MiR, all ROS functionality is available using the MiR as a ROS Master.
+
+```
+export ROS_MASTER_URI=http://192.168.12.20:11311
+rostopic list
+```
+
+This will show all available topics. Further reading: http://wiki.ros.org/ROS/Tutorials/MultipleMachines
+
+## Working on non-ROS-OS (Docker)
 Docker can be used to obtain ROS-functionality on machines that are not nativly running ROS (e.g. Ubuntu 22.04 for noetic). To use this repository with docker an image using the [./Dockerfile](./Dockerfile) needs to be build. *(of course, docker needs to be installed)*
 
 ```
@@ -111,3 +125,9 @@ If you need a second terminal while container is running, use this:
 docker exec -it <CONTAINER_ID> bash
 $ source /opt/ros/<ROS_DISTRO>/setup.bash
 ```
+
+## Additional Links
+
+- Quickstart: https://www.mobile-industrial-robots.com/media/12722/mir250_quick_start_1-4_en.pdf
+- Detailed Guide: https://www.mobile-industrial-robots.com/media/12739/mir250_user_guide_1-4_en.pdf
+- Web-interface Guide: https://www.mobile-industrial-robots.com/media/13758/mir-robot-reference-guide-23_en.pdf
