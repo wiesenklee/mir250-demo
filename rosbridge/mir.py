@@ -1,5 +1,4 @@
 import roslibpy
-import json
 
 class MirInspect:
     def __init__(self, host="mir.com", port=9090):
@@ -27,13 +26,14 @@ class MirInspect:
         self.client.terminate()
         
     def topic_list(self):
-        t = self.client.get_topics(callback=None)
-        print(json.dumps(t, indent=3))
+        return self.client.get_topics(callback=None)
 
-    def topic_echo(self, t):
-        t = self.__createTopic(self.client, '/camera_floor_left/driver/color/image_raw')
+    def topic_start_echo(self, t_name):
+        t = self.__createTopic(self.client, t_name)
         t.subscribe(lambda m: print(m))
-        input("press enter to stop echo")
+        return t
+
+    def topic_stop_echo(self, t):    
         t.unsubscribe()
 
 class MirManual:

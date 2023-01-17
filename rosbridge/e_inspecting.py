@@ -1,3 +1,5 @@
+import json
+
 from mir import MirInspect
 
 sdt_host = "mir.com"
@@ -13,11 +15,18 @@ try: mir.connect()
 except:
   print("Cloud not connect to mir! Leaving...")
   exit()
-print("Connected!")
+print("Connected!\n")
 
 # Inspecting
-mir.topic_list()
-mir.topic_echo('/camera_floor_left/driver/color/image_raw')
-#input("Hit enter when you're done!")
+print("Getting all available topics:")
+l = mir.topic_list()
+print(json.dumps(l, indent=3))
 
+print()
+print("Give a topic to echo (Press any key to aboard): ")
+t = None
+while t not in l: t = input()
+t = mir.topic_start_echo(t)
+input()
+mir.topic_stop_echo(t)
 mir.terminate()
